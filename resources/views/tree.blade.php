@@ -204,7 +204,6 @@
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").hide();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").show();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").prop( "checked", true );
-
                          
 
 
@@ -213,6 +212,7 @@
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").show();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").hide();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").prop( "checked", true );
+                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").chechForParent();
                           
                       }
 
@@ -237,33 +237,37 @@
                                 }
                         });
 
-                         // console.log(not_checked);
+                         console.log('not checked: '+not_checked);
 
                          if (checked) {
 
                           console.log('hit');
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").hide();
+                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").prop( "checked", false );
+
                           $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox").hide();
                           $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox2").show();
                           $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox2").prop( "checked", true );
-                          $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").show();
-                    
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").show();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").prop( "checked", true );
 
                            if (not_checked) {
 
-                          $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox").show();
-                          $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox2").hide();
-                          $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
-                      }
+                                $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox").show();
+                                $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox2").hide();
+                                $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
+                                 $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").chechForParent();
+                               
+                           }
+
+                          
 
                       }else{
 
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").show();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox2").hide();
                           $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").prop( "checked", false );
-                      console.log(not_checked);
+                          $(this).parent().parent().parent().parent().parent().find(".branchCheckBox").chechForParent();
                      
 
                       }
@@ -326,6 +330,7 @@
                          if (checked) {
 
                           $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").hide();
+                          $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
                           $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").show();
                           $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").prop( "checked", true );
 
@@ -360,11 +365,105 @@
                $( ".branchCb-"+value1 ).prop( "checked", false );
              }
 
-      
+          $(this).chechForParent();
+          });
+
+
+          $( "#myDiv" ).on( "click", ".treeCheckBox2", function( event ) {
+              event.preventDefault();
+              var value = event.target.id;
+            
+              $(this).hide();
+              $('#'+value).show().prop( "checked", true );
+
+             if ($('#'+value).is(':checked')) {
+                  var value1 = event.target.id;
+
+                $( ".maintree-"+value1 ).filter(".branchCheckBox").show();
+                 $( ".maintree-"+value1 ).filter(".branchCheckBox").prop( "checked", true );
+                   $( ".maintree-"+value1 ).filter(".branchCheckBox2").hide();
+                 $( ".maintree-"+value1 ).filter(".branchCheckBox2").prop( "checked", false );
+
+              
+                 $( ".maintree-"+value1 ).prop( "checked", true );
+              
+             }else{
+               $( ".maintree-"+value1 ).prop( "checked", false );
+             }
+
+        
           });
 
 
 
+
+          $.fn.chechForParent = function() {
+              
+              if ($(this).is(':checked')) {
+
+                                   
+                                   var branchBrotherBoxes =  $(this).parent().parent().parent().attr('id');
+                           
+                                   var unchecked = 0;
+
+                                   $('div#'+branchBrotherBoxes+' input[name=branchBox]').each(function() {
+                                             if (!$(this).is(":checked")) {
+                                                
+                                                ++unchecked;
+                                                
+                                            }
+                                   });
+                                 
+                                   if (unchecked) {
+
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").hide();
+                                        $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").show();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").prop( "checked", true );
+
+                                   }else{
+
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").show();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").hide();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", true );
+
+                                   }
+
+                         }
+
+
+                         else{ 
+                                    
+                                    var checked = 0;
+                                    var branchBrotherBoxes =  $(this).parent().parent().parent().attr('id');
+                                    
+                                     $('div#'+branchBrotherBoxes+' input[name=branchBox]').each(function() {
+                                             
+                                             if ($(this).is(":checked")) {
+                                                
+                                                ++checked;   
+                                             }
+                                     });
+
+                                     
+
+                                      if (checked) {
+
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").hide();
+                                        $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").show();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").prop( "checked", true );
+
+
+                                   }else{
+
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").show();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox2").hide();
+                                       $(this).parent().parent().parent().parent().parent().find(".treeCheckBox").prop( "checked", false );
+
+                                   }
+                         }
+          };
 
 
       
