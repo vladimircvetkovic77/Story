@@ -5,7 +5,8 @@
       <div class="tree unselectable" unselectable="on">
          <ul style="list-style: none;">
             <li>
-               <input type="checkbox" id="{{$tree->id}}" class="treeCheckBox">
+              <input type="checkbox" id="{{$tree->id}}" class="treeCheckBox selection" value="{{ $tree->name }}">
+              <input type="checkbox" id="{{$tree->id}}" class="lowOpacity treeCheckBox2" value="{{ $tree->name }}" style="display: none">
                <strong>
                <label class="treeLabel" id="{{$tree->id}}">  &nbsp;&nbsp; {!! $tree->icon !!} &nbsp;&nbsp;{{ $tree->name }}
                @php 
@@ -29,18 +30,19 @@
                            
                            @endwhile
                        @endif 
-                       </small>
+                       
                @endforeach
                </label>
                </strong> 
                @foreach($branches as $branch) 
                @if($branch->tree_id === $tree->id)
-               <div class="branch maintree-{{ $tree->id }}" id="tree-{{ $tree->id }} unselectable" unselectable="on">
+               <div class="branch maintree-{{ $tree->id }} unselectable" id="tree-{{ $tree->id }}" unselectable="on">
                   <ul style="list-style: none;">
                      <li>
-                        <input type="checkbox" id="{{$branch->id}}" class="branchCheckBox maintree-{{ $tree->id }}">
+                       <input type="checkbox" name="branchBox" id="{{$branch->id}}" class="branchCheckBox maintree-{{ $tree->id }} selection" style="margin-bottom: px;" value="{{ $tree->name }} / {{ $branch->name }}">
+                      <input type="checkbox" id="{{$branch->id}}" class="lowOpacity branchCheckBox2 maintree-{{ $tree->id }}" style="display: none" value="{{ $branch->name }}">
                         <label class="branchLabel" id="{{$branch->id}}"> &nbsp;&nbsp; {!! $branch->icon !!} &nbsp;&nbsp; {{ $branch->name }} 
-                        <small> 
+                       
                         @php 
                         $l = 0; 
                         @endphp
@@ -63,9 +65,9 @@
 
                                     @endwhile
                             @endif 
-                            </small> 
+                           
                         @endforeach
-                        </small>
+                       
                         </label>
                      </li>
                      @foreach($leaves as $leaf) 
@@ -73,7 +75,7 @@
                      <div class="leaf branch-{{ $branch->id }}" id="branch-{{ $branch->id }}" unselectable="on">
                         <ul style="list-style: none;">
                            <li>
-                              <input type="checkbox" id="{{$leaf->id}}" class="leafCheckBox maintree-{{ $tree->id }} branchCb-{{$branch->id}} ">
+                              <input type="checkbox" id="{{$leaf->id}}" class="leafCheckBox selection maintree-{{$tree->id}} branchCb-{{$branch->id}} " value="{{ $tree->name }} / {{ $branch->name }} / {{ $leaf->name }}">
                               <label> &nbsp;&nbsp; {!! $leaf->icon !!} &nbsp;&nbsp; {{ $leaf->name }}</label>
                            </li>
                         </ul>
@@ -89,8 +91,8 @@
       </div>
    </nav>
    @endforeach
-   <button type="button" class="btn btn-danger" style="margin-left: 35px;">Cancel</button>
-   <button type="button" class="btn btn-success">Apply</button>
+   <button type="button" id="button1" class="btn btn-danger" style="margin-left: 35px; display: none;">Cancel</button>
+               <button type="button" id="button2" class="btn btn-success" style="display: none;">Apply</button>
 </div>
 </div>
 </div>

@@ -25,15 +25,13 @@ class SearchController extends Controller
     	if ($request->ajax()) {
 	    	
 	    	$trees = Tree::where('name', 'LIKE', '%'.$request->search.'%')->with('branches', 'leaves')->orderBy('id', 'ASC')->get();
-
 	    	$branches = Branch::where('name', 'LIKE', '%'.$request->search.'%')->with('tree', 'leaves')->get();
-
 	    	$leaves = Leaf::where('name', 'LIKE', '%'.$request->search.'%')->with('branch')->get();
 
 	    	
 
 	    	foreach ($leaves as $leave) {
-	 		
+	 	
 	 			if (!($branches->contains($leave->branch))) {
 	                $branches->push($leave->branch);
 	            }
@@ -46,9 +44,8 @@ class SearchController extends Controller
 	                $trees->push($branch->tree);
 	            }
 	    	}
-	    	$trees = $trees->sortBy('created_at');
 
-	    	// dd($leaves);
+	    	$trees = $trees->sortBy('created_at');
 
 	    	return view('templatetree', compact('trees', 'branches', 'leaves'));
 
