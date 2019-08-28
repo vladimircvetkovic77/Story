@@ -53,6 +53,13 @@ $(document).ready(function() {
         if ($(this).is(':checked')) {
 
             $(".maintree-" + value).prop("checked", true);
+             $(".maintree-" + value+'.branchCheckBox').show();
+              $(".maintree-" + value+'.branchCheckBox2').hide();
+               $(".maintree-" + value+'.branchCheckBox2').prop("checked", false);
+
+
+
+
 
         } else {
             $(".maintree-" + value).prop("checked", false);
@@ -309,7 +316,7 @@ $(document).ready(function() {
 
 
 
-    $.fn.chechForParent = function() {
+    $.fn.chechForParent = function(event) {
 
         if ($(this).is(':checked')) {
 
